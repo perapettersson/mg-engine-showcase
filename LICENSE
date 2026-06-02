@@ -1,0 +1,15 @@
+Copyright (c) 2026 Per Pettersson
+
+All rights reserved.
+
+This repository documents the architecture and research methodology of a
+proprietary systematic-trading research platform ("MG Engine"). The full
+engine source code is private and is NOT licensed for use, copying, modification,
+or redistribution.
+
+The documentation contained in this repository (README, docs/, diagrams) may be
+read and referenced for the purpose of evaluating the author's work. No other
+rights are granted.
+
+Representative source modules and a deeper technical walk-through are available
+on request.

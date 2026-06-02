@@ -1,0 +1,66 @@
+\documentclass[10pt]{article}
+\usepackage[a4paper,margin=0.7in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{xcolor}
+
+\definecolor{navy}{RGB}{20,40,90}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\pagestyle{empty}
+\newcommand{\heading}[1]{\vspace{2pt}{\color{navy}\large\textbf{#1}}\par\vspace{0pt}}
+
+\begin{document}
+
+\begin{center}
+{\LARGE\textbf{MG Engine}}\\[3pt]
+{\small Minority-Game Systematic Trading Research Platform --- DAX Futures}\\[5pt]
+{\footnotesize Per Pettersson \quad$\cdot$\quad per.privat.pettersson@gmail.com \quad$\cdot$\quad github.com/perapettersson/mg-engine-showcase}
+\end{center}
+
+\heading{Overview}
+A deterministic, replay-safe, bar-by-bar trading engine for equity-index futures, built from
+scratch in R (approx.\ 60,000 lines) and grounded in Minority Game statistical mechanics
+(Challet, Marsili, Zhang, Coolen). The same configuration on the same data reproduces the same
+output, bar for bar.
+
+\heading{Architecture}
+\begin{itemize}\setlength\itemsep{1pt}
+\item Seven-layer per-bar pipeline: MG signal $\rightarrow$ edge validation $\rightarrow$ risk sizing $\rightarrow$ governance $\rightarrow$ per-frequency intent $\rightarrow$ execution latch $\rightarrow$ fill, under a binding \textit{decision(t) $\rightarrow$ execution(t+1)} timing law.
+\item Strict single-writer state --- every surface has exactly one owning module; a projection / selection / commit phase split per layer makes all data flow auditable.
+\item Multi-frequency consensus on prime-number timeframes (1m execution carrier + 7m / 13m / 19m voters) to avoid trader-cluster boundaries.
+\item approx.\ 149 per-bar attribution surfaces tracing every decision from raw signal to realized fill.
+\end{itemize}
+
+\heading{Theoretical basis}
+\begin{itemize}\setlength\itemsep{1pt}
+\item Latent agent ecology: N agents per timeframe, each holding S strategies that map a market-history index to an action, with virtual-score learning and grand-canonical abstention.
+\item Per-bar order parameters: predictability $H$, volatility $\sigma^2$, real-vs-fake payoff $\Delta$, strategy score gap, crowd concentration, frozen fraction.
+\item Implements mechanics from Coolen (cavity / generating-functional analysis), De Martino (mix-game), Marsili (producer--speculator), Sasidevan (stochastic strategies), Kalinowski (multi-memory) and Ferreira--Marsili (autocorrelation-adaptive payoff).
+\end{itemize}
+
+\heading{Validation \& rigor}
+\begin{itemize}\setlength\itemsep{1pt}
+\item Cross-anchor study over 20 anchors spanning 2024--2026 regimes (trend up/down, central-bank windows, stress).
+\item Walk-forward in-/out-of-sample split; bootstrap confidence intervals (B = 1000); Monte-Carlo trade-order shuffles (M = 10000); vol-scaled (Almgren--Chriss-style) cost model.
+\item Self-falsification discipline: a multi-state regime machine was designed, implemented behind audit flags, verified across anchors, and reverted when it produced no net lift --- never curve-fit to the sample.
+\end{itemize}
+
+\heading{Results --- honest}
+\begin{itemize}\setlength\itemsep{1pt}
+\item Research-grade: a measurable gross signal exists, but the net edge is marginal and information-limited under OHLC-only inputs --- consistent with the Glosten--Milgrom information ceiling.
+\item The deliverable is reproducible methodology and engineering integrity --- deterministic replay, full attribution, honest negative results --- not an inflated P\&L claim.
+\end{itemize}
+
+\heading{Engineering \& stack}
+\begin{itemize}\setlength\itemsep{1pt}
+\item R; the architecture (single-writer, deterministic replay, strict t+1 timing) ports cleanly to Python / C++.
+\item ``The logic carries the bot'' --- no curve-fit thresholds, no sample-tuned weights, no side-disable filters; every parameter is justifiable independently of the current sample.
+\end{itemize}
+
+\vfill
+\begin{center}
+{\footnotesize Full engine source proprietary $\cdot$ representative modules and a technical walk-through available on request.}
+\end{center}
+
+\end{document}
