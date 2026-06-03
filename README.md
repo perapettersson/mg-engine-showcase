@@ -71,8 +71,10 @@ See [`docs/methodology.md`](docs/methodology.md).
 
 Across the cross-anchor study the engine is **research-grade**: a measurable gross signal exists,
 but the *net* edge is marginal and **information-limited under OHLC inputs** — consistent with
-the Glosten–Milgrom information ceiling. A **volume (OHLCV)** signal extension is now wired in and
-under cross-anchor evaluation. Several architectural hypotheses (an 8-state regime
+the Glosten–Milgrom information ceiling. A **volume (OHLCV)** signal extension was wired in and
+cross-anchor-tested (N=20) — it produced **no net lift** (the ceiling held under OHLCV too) and was
+reverted, evidence the binding constraint is information *content*, not the OHLC/OHLCV distinction.
+Several architectural hypotheses (an 8-state regime
 classifier, dynamic payoff-mode switching) were implemented, tested, and **falsified**; each was
 reverted rather than curve-fit to the sample. The deliverable is the **methodology and engineering
 integrity** — deterministic replay, full attribution, and honest negative results — not an inflated

@@ -52,8 +52,9 @@ and dropped.
 
 The conclusion the evidence supports — that the binding constraint is the **information content of
 OHLC inputs**, not the modeling method — is itself a falsifiable claim. The first test — adding
-**volume (OHLCV)** — is now wired in and under cross-anchor evaluation; order-flow / cross-asset
-extensions remain the explicit next steps.
+**volume (OHLCV)** — was wired in and cross-anchor-evaluated (N=20): **no net lift** (profit-factor
+robustness unchanged-to-slightly-worse), so it was reverted rather than kept — the ceiling held
+under OHLCV too. Order-flow / cross-asset extensions remain the explicit next steps.
 
 ---
 
