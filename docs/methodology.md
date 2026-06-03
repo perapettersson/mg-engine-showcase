@@ -7,7 +7,7 @@ falsify your own hypotheses before the market does.**
 
 ## 1. Cross-anchor study
 
-The engine is replayed against **20 anchors** spanning distinct 2024–2026 market regimes — trending
+The engine is replayed against **20 anchors** spanning distinct 2022–2024 market regimes — trending
 up, trending down, central-bank (FOMC/ECB) windows, and stress events. Each anchor is an independent
 full run in its own isolated worktree, dispatched in parallel. Per-anchor and aggregate KPIs are
 collected: expectancy per trade, profit factor, payoff ratio, and hit rate (hit rate is treated as a
@@ -51,8 +51,9 @@ good on the sample. The same fate met a queue of signal-extraction ideas, each d
 and dropped.
 
 The conclusion the evidence supports — that the binding constraint is the **information content of
-OHLC-only inputs**, not the modeling method — is itself a falsifiable claim, and the path to test it
-(adding volume / order-flow / cross-asset information) is explicit.
+OHLC inputs**, not the modeling method — is itself a falsifiable claim. The first test — adding
+**volume (OHLCV)** — is now wired in and under cross-anchor evaluation; order-flow / cross-asset
+extensions remain the explicit next steps.
 
 ---
 

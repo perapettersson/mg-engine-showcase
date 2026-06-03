@@ -59,7 +59,7 @@ Kalinowski (multi-memory) and Ferreira–Marsili (autocorrelation-adaptive payof
 
 Strategy quality is measured the way a research desk would, not by a single backtest:
 
-- **Cross-anchor study** — 20 anchors spanning 2024–2026 regimes (trend-up/down, FOMC, stress).
+- **Cross-anchor study** — 20 anchors spanning 2022–2024 regimes (trend-up/down, FOMC, stress).
 - **Walk-forward** in-sample / out-of-sample split per anchor.
 - **Bootstrap confidence intervals** (B = 1000) on expectancy, profit factor, payoff ratio.
 - **Monte-Carlo trade-order** shuffles (M = 10000) for drawdown distribution and capital efficiency.
@@ -70,8 +70,9 @@ See [`docs/methodology.md`](docs/methodology.md).
 ## Honest results
 
 Across the cross-anchor study the engine is **research-grade**: a measurable gross signal exists,
-but the *net* edge is marginal and **information-limited under OHLC-only inputs** — consistent with
-the Glosten–Milgrom information ceiling. Several architectural hypotheses (an 8-state regime
+but the *net* edge is marginal and **information-limited under OHLC inputs** — consistent with
+the Glosten–Milgrom information ceiling. A **volume (OHLCV)** signal extension is now wired in and
+under cross-anchor evaluation. Several architectural hypotheses (an 8-state regime
 classifier, dynamic payoff-mode switching) were implemented, tested, and **falsified**; each was
 reverted rather than curve-fit to the sample. The deliverable is the **methodology and engineering
 integrity** — deterministic replay, full attribution, and honest negative results — not an inflated

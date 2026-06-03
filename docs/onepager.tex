@@ -40,14 +40,14 @@ Zhang, Coolen). The same configuration on the same data reproduces the same outp
 
 \heading{Validation \& rigor}
 \begin{itemize}\setlength\itemsep{1pt}
-\item Cross-anchor study over 20 anchors spanning 2024--2026 regimes (trend up/down, central-bank windows, stress).
+\item Cross-anchor study over 20 anchors spanning 2022--2024 regimes (trend up/down, central-bank windows, stress).
 \item Walk-forward in-/out-of-sample split; bootstrap confidence intervals (B = 1000); Monte-Carlo trade-order shuffles (M = 10000); vol-scaled (Almgren--Chriss-style) cost model.
 \item Self-falsification discipline: a multi-state regime machine was designed, implemented behind audit flags, verified across anchors, and reverted when it produced no net lift --- never curve-fit to the sample.
 \end{itemize}
 
 \heading{Results --- honest}
 \begin{itemize}\setlength\itemsep{1pt}
-\item Research-grade: a measurable gross signal exists, but the net edge is marginal and information-limited under OHLC-only inputs --- consistent with the Glosten--Milgrom information ceiling.
+\item Research-grade: a measurable gross signal exists, but the net edge is marginal and information-limited under OHLC inputs --- consistent with the Glosten--Milgrom information ceiling; a volume (OHLCV) extension is now wired in and under cross-anchor evaluation.
 \item The deliverable is reproducible methodology and engineering integrity --- deterministic replay, full attribution, honest negative results --- not an inflated P\&L claim.
 \end{itemize}
 
