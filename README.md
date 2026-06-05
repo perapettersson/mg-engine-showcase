@@ -1,6 +1,6 @@
 # MG Engine — Minority-Game Systematic Trading Research Platform
 
-> A deterministic, replay-safe, bar-by-bar trading engine for equity-index futures (DAX),
+> A deterministic, replay-safe, bar-by-bar trading engine for equity-index futures,
 > grounded in Minority Game theory (Challet · Marsili · Zhang · Coolen).
 > ~60,000 lines of R in a strict single-writer architecture.
 
@@ -93,10 +93,10 @@ P&L claim.
 |---|---|
 | [`docs/architecture.md`](docs/architecture.md) | Pipeline, A/B/C phases, timing law, single-writer model |
 | [`docs/methodology.md`](docs/methodology.md) | Cross-anchor / walk-forward / bootstrap / Monte-Carlo validation |
-| [`src/`](src/) | Module taxonomy; representative modules available on request |
+| [`src/`](src/) | Module taxonomy and design notes |
 
 ## About
 
-Built and maintained by **Per Pettersson**. The full engine source is proprietary; this repository
-documents its architecture and research methodology. Representative modules and a deeper technical
-walk-through are available on request — per.privat.pettersson@gmail.com.
+A self-directed research project by **Per Pettersson**. This repository documents its architecture
+and research methodology at a high level and contains no source code. A technical walk-through is
+available on request — per.privat.pettersson@gmail.com.

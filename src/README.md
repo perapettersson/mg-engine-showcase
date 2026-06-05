@@ -1,8 +1,7 @@
 # Source — module taxonomy
 
-The full engine source (~60,000 lines of R across ~45 files) is **proprietary and private**.
-This page documents its module structure so the engineering is visible without exposing the code.
-Representative, sanitized modules can be shared on request for evaluation.
+This page documents the engine's module structure (~60,000 lines of R across ~45 files). **No source
+code is included in this repository** — the engineering is visible from the structure alone.
 
 ## Layer modules (decision chain → consequence chain)
 
