@@ -5,7 +5,7 @@
 > ~60,000 lines of R in a strict single-writer architecture.
 
 **Status:** research-grade · fully reproducible · honestly falsified
-**Stack:** R · paradigm ports cleanly to Python · 163 per-bar attribution surfaces
+**Stack:** R reference · four verified ports (Python · C++ · C · Rust) · 163 attribution surfaces
 
 ---
 
@@ -17,6 +17,11 @@ mechanics into a complete per-bar decision pipeline. Each bar flows through seve
 latch → fill** — under a binding `decision(t) → execution(t+1)` timing law. Every state field has
 **exactly one writer**, and the same configuration on the same data reproduces the same output,
 bar for bar.
+
+Signal and execution instrument are deliberately separate: the engine reads a 1-minute cash-index
+feed and is designed to trade the corresponding exchange-listed future — the standard
+index-as-signal / future-as-trade split, and the reason the cost model is calibrated against
+futures tape rather than against the index.
 
 ```
             DECISION CHAIN (bar t)                              CONSEQUENCE (t+1)
@@ -39,6 +44,11 @@ bar for bar.
   capture why every bar did what it did, from raw MG signal through edge, risk, governance, intent
   and fill.
 - **Determinism** — same config + same data = identical output; no RNG outside seeded agent init.
+- **Four parallel ports** — the engine is re-implemented in Python, C++, C and Rust at full 47/47
+  file parity with the R reference, each producing the same 163-surface output. R is the single
+  source of truth; ports are verified against it by static differential audit and output-surface
+  parity, **not** by bit-identity — each seeds its own RNG, so cross-engine metric comparison is
+  deliberately treated as uninterpretable rather than quietly reported as agreement.
 
 See [`docs/architecture.md`](docs/architecture.md).
 
@@ -57,9 +67,22 @@ opportunity-cost benchmark of the canonical formulation). Core order parameters 
   quantity
 - **score gap**, crowd concentration, frozen-fraction, susceptibility proxies
 
-Implemented mechanics span Challet/Marsili/Zhang, Coolen (cavity / generating-functional analysis),
-De Martino (mix-game), Marsili (producer–speculator), Sasidevan (stochastic strategies),
-Kalinowski (multi-memory) and Ferreira–Marsili (autocorrelation-adaptive payoff).
+Implemented mechanics are listed by **what actually runs**, not by what was coded — the distinction
+is the point:
+
+- **Live** — Challet/Marsili/Zhang (the canonical kernel: virtual-score learning, minority payoff,
+  crowd/anti-crowd strategy pairing); De Martino (mix-game population split; continuous payoff form);
+  Sasidevan (the stochastic *representation* only — not the paper's co-action equilibrium).
+- **Audit-only** — Coolen (cavity phase-health, generating-functional history recurrence): computed
+  every bar, gated off, zero decision impact. Ferreira–Marsili (autocorrelation-adaptive payoff): the
+  metric runs; the regime switch it was built to drive was falsified and is dormant.
+- **Implemented, then falsified and disabled** — producer–speculator injection (CMZ): hit rate fell
+  63% → 41% cross-anchor, reverted, config-disabled. Mitman-Choe-Johnson heterogeneous memory depth:
+  faithfully implemented, then configured inert once a memory-depth probe found no directional
+  information at *any* depth (mutual information at or below the shuffled null, m = 1…8).
+
+A per-reference provenance map — paper → mechanism → code site → honest status — is maintained
+separately, specifically so that "implemented" is never allowed to blur into "load-bearing".
 
 ## Validation & rigor
 
@@ -133,7 +156,7 @@ discipline is for.
 
 ## Honest results
 
-Across the cross-anchor study the engine is **research-grade**: a measurable gross signal exists,
+Across the cross-anchor study the outcome is **a rigorous negative**: a measurable gross signal exists,
 but the *net* edge is marginal and **information-limited under OHLC inputs** — consistent with
 the Glosten–Milgrom information ceiling. A **volume (OHLCV)** signal extension was wired in and
 cross-anchor-tested (N=20) — it produced **no net lift** (the ceiling held under OHLCV too) and was
