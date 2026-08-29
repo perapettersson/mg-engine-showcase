@@ -74,6 +74,63 @@ Strategy quality is measured the way a research desk would, not by a single back
 
 See [`docs/methodology.md`](docs/methodology.md).
 
+## Research protocol
+
+The validation above is the *measurement*. The protocol is what decides whether a measurement is
+allowed to count — and it is the part that took longest to build.
+
+**Nothing is built until a probe survives.** A coordinate — a point in a typed axis-space of
+information, target, horizon, construction and venue — is falsified *cheaply*, before any engine
+exists. The sequence is fixed:
+
+```
+GATE -1  point-in-time      is the data legitimate to measure on? (knowledge-time, not event-time)
+GATE  0  coordinate         does ≥1 causal axis actually move, or is this a relabel?
+GATE  1  pre-commitment     kill-lines + trial count written down BEFORE any data is fetched
+GATE  2  cheap measurement  rank-IC on data already held — no pipeline, no engine
+GATE  3  multiple testing   deflated Sharpe · PBO via CSCV · FWER/FDR · minimum track record
+GATE  4  robustness         purged + embargoed CV · realistic cost · decay
+GATE  5  verdict            survive all → only now build. Any kill → record it, move a lever.
+GATE  6  survivor → paper   promotion AND demotion lines pre-registered before paper trading starts
+```
+
+**Pre-registration is enforced by the tooling, not by good intentions.** The statistics harness
+refuses to emit a verdict unless a pre-registration file already exists on disk. Result-shopping is
+impossible by construction rather than discouraged by policy. It returns exactly three answers —
+`PASS`, `KILL:<reason>`, `UNDERPOWERED` — and ships with 19 deterministic self-tests, including
+ground-truth controls in both directions: a known-null feature must be killed, a known-real one must
+survive.
+
+**Multiple-testing correction runs at programme scope, not probe scope.** Deflating a Sharpe ratio by
+the trials inside one probe is not enough — whatever you eventually deploy is the maximum over *every*
+coordinate the programme has ever searched. Per the False Strategy Theorem the expected maximum Sharpe
+across 1,000 null trials is **3.26**, with a true Sharpe of zero. So the deflation is applied against
+the whole search history, which grows every time a verdict is reached quickly.
+
+**Verdicts are typed, and never merged.** `FALSIFIED` (the coordinate is dead) is a different event
+from `KILL` (a pre-committed line tripped), from `GATE-FAIL` (never entered testing), from
+`cost-trapped` (statistically real, uneconomic), from `UNDERPOWERED` (*cannot conclude* — explicitly
+not a kill, and not permitted to be reported as one). Collapsing these would be the cheapest way to
+launder a weak result into a strong-sounding one.
+
+**The gates are themselves audited for over-strictness.** A protocol tuned to avoid false positives
+can quietly kill edges that are real but marginal — and the resulting pile of negative results then
+*looks* like a genuine information ceiling when it is an artifact of the process. So the check runs in
+the other direction: take a **documented public anomaly**, answer known and fixed in advance, and put
+it through the entire gauntlet. The gates must let it through.
+
+Momentum was used. The result was **mixed, and is recorded as mixed**: the gauntlet detected it
+(p = 0.001, bootstrap CI excluding zero, out-of-sample intact, adequately powered) — but the
+programme-scope Sharpe deflation *rejected* it. One of the best-documented anomalies in finance,
+failed by a single over-eager gate. The conclusion was written back into the protocol rather than
+explained away: deflation is one layer of evidence, never a sole guillotine.
+
+**There is a failure log, and it is not empty.** It records occasions when the process itself was
+violated — a result sentence drafted from expectation before the script had printed, caught on review
+against the verbatim output, corrected. Those entries stay in the file, with the lesson attached. The
+pull to pre-narrate is strongest exactly when the result would be exciting, which is the moment the
+discipline is for.
+
 ## Honest results
 
 Across the cross-anchor study the engine is **research-grade**: a measurable gross signal exists,
