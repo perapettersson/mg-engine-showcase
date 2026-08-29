@@ -179,7 +179,7 @@ what is knowable) from **labels** (axes that only change what it is called):
 
 | Axis | Type | MG engine | Companion study |
 |---|---|---|---|
-| **info** | lever | OHLC(V) | OHLCV **+ 1D order flow** |
+| **info** | lever | OHLC | OHLCV **+ 1D order flow** |
 | **target** | lever | direction | direction |
 | **horizon** | lever | 7–19 min | 1 h / 4 h |
 | **construction** | lever | single-asset directional | single-asset directional |
