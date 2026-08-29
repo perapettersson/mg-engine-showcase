@@ -80,6 +80,49 @@ reverted rather than curve-fit to the sample. The deliverable is the **methodolo
 integrity** — deterministic replay, full attribution, and honest negative results — not an inflated
 P&L claim.
 
+## Companion study — why the verdict is about information, not method
+
+A single falsified engine is a weak result: on its own it cannot separate *"my model was wrong"*
+from *"there was nothing there to find."* The verdict above is stronger because a **second,
+independent study** attacked the same question with a different model, a different market, and
+strictly richer inputs — and returned the same null.
+
+Both studies are placed on a shared coordinate system that separates **levers** (axes that change
+what is knowable) from **labels** (axes that only change what it is called):
+
+| Axis | Type | MG engine | Companion study |
+|---|---|---|---|
+| **info** | lever | OHLC(V) | OHLCV **+ 1D order flow** |
+| **target** | lever | direction | direction |
+| **horizon** | lever | 7–19 min | 1 h / 4 h |
+| **construction** | lever | single-asset directional | single-asset directional |
+| venue | gate | index future | spot |
+| model | *label* | Minority Games (R) | 1D CNN (PyTorch) |
+| asset | *label* | equity index | crypto |
+| **Outcome** | | **falsified** | **falsified** |
+
+Only the two **labels** differ. Every **lever** is identical or co-falsified — including `info`,
+which the companion moved *upward* by adding order flow rather than sideways. It was built on a
+self-maintained derivatives store (~30 pairs of 1-minute OHLCV plus funding, open-interest,
+volatility, long/short-ratio and liquidation panels) and held to the same pre-committed
+falsification protocol.
+
+**Two model families, two asset classes, richer information in the second — the same null.**
+That is the difference between *"my model did not work"* and a **measured information ceiling**:
+the binding constraint sits in what price and order-flow data *contain* about this target at this
+horizon, not in the machinery reading them. Swapping the model — MG → CNN → anything newer — moves
+sideways along a label. It cannot lift a ceiling that is a property of the data.
+
+### What the negative decided
+
+The coordinate system is not a filing scheme; it is a decision rule. With `model` and `asset`
+established as exhausted, the follow-on work moved a **lever** instead: same market, same data
+store, a different **information channel** — from price and order flow to *positioning* (what the
+crowd is holding, rather than the wake it leaves in the tape), which is also the regime Minority
+Game theory actually describes. That study is open, not concluded.
+
+Recording the negative precisely is what made the next question obvious.
+
 ## Engineering principles
 
 - *"The logic carries the bot"* — no curve-fit thresholds, no sample-tuned weights, no side-disable
