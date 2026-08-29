@@ -5,7 +5,7 @@
 > ~60,000 lines of R in a strict single-writer architecture.
 
 **Status:** research-grade · fully reproducible · honestly falsified
-**Stack:** R · paradigm ports cleanly to Python · ~149 per-bar attribution surfaces
+**Stack:** R · paradigm ports cleanly to Python · 163 per-bar attribution surfaces
 
 ---
 
@@ -31,11 +31,13 @@ bar for bar.
   surfaces, never side-stepped. A (projection) / B (selection) / C (commit) phase split per layer.
 - **Strict t+1 execution timing** — intent decided at bar `t` executes at the open of bar `t+1`;
   no same-bar round-trips, no look-ahead.
-- **Multi-frequency consensus** — independent MG agent populations run on prime-number timeframes
-  (1m carrier + 7m/13m/19m voters) to avoid trader-cluster boundaries; execution is always on the
-  1-minute carrier for fast-to-market entry.
-- **Full attribution** — ~149 CSV surfaces capture why every bar did what it did, from raw MG
-  signal through edge, risk, governance, intent and fill.
+- **Multi-frequency agent populations** — independent MG populations run on prime-number timeframes
+  (1m carrier + 7m/13m/19m deciders) to avoid trader-cluster boundaries, collapsed to one decision by
+  either of two selectable rules: argmax single-winner, or k-of-N consensus among the higher
+  timeframes. Execution always resolves to the 1-minute carrier — which never votes on direction.
+- **Full attribution** — 163 CSV surfaces (52 exported state surfaces + 111 derived diagnostics)
+  capture why every bar did what it did, from raw MG signal through edge, risk, governance, intent
+  and fill.
 - **Determinism** — same config + same data = identical output; no RNG outside seeded agent init.
 
 See [`docs/architecture.md`](docs/architecture.md).
@@ -43,12 +45,16 @@ See [`docs/architecture.md`](docs/architecture.md).
 ## Theoretical basis
 
 The signal layer emulates the speculative MG framework: N latent agents per timeframe each hold
-S strategies mapping a market-history index `μ` to an action, with virtual-score learning and
-grand-canonical abstention. Core order parameters are computed per bar:
+S strategies mapping a market-history index `μ` to an action, with virtual-score learning and a
+grand-canonical-style abstention threshold (a static participation cutoff — not the full
+opportunity-cost benchmark of the canonical formulation). Core order parameters are computed per bar:
 
 - **H** — predictability of the price-sign history `(1/P) Σ⟨A⟩²_μ`
 - **σ²** — aggregate volatility `Var(A)`
-- **Δ(real − fake)** — payoff of the adaptive strategy vs a random baseline (the main edge detector)
+- **Δ(real − fake)** — the adaptive strategy's payoff against a random baseline. The canonical form
+  is computed inside the latent agent ecology; the field the entry gate actually consumes is a
+  cheaper composite proxy, labelled as such in the source rather than passed off as the canonical
+  quantity
 - **score gap**, crowd concentration, frozen-fraction, susceptibility proxies
 
 Implemented mechanics span Challet/Marsili/Zhang, Coolen (cavity / generating-functional analysis),
@@ -63,7 +69,8 @@ Strategy quality is measured the way a research desk would, not by a single back
 - **Walk-forward** in-sample / out-of-sample split per anchor.
 - **Bootstrap confidence intervals** (B = 1000) on expectancy, profit factor, payoff ratio.
 - **Monte-Carlo trade-order** shuffles (M = 10000) for drawdown distribution and capital efficiency.
-- **Cost-friction analysis** with vol-scaled execution costs (Almgren–Chriss style).
+- **Cost-friction analysis** — a single vol-scaled per-fill cost constant, validated after the fact
+  against exchange tape (0.75 points assumed vs a 0.705-point half-spread measured over 20 days).
 
 See [`docs/methodology.md`](docs/methodology.md).
 
@@ -116,10 +123,13 @@ sideways along a label. It cannot lift a ceiling that is a property of the data.
 ### What the negative decided
 
 The coordinate system is not a filing scheme; it is a decision rule. With `model` and `asset`
-established as exhausted, the follow-on work moved a **lever** instead: same market, same data
-store, a different **information channel** — from price and order flow to *positioning* (what the
-crowd is holding, rather than the wake it leaves in the tape), which is also the regime Minority
-Game theory actually describes. That study is open, not concluded.
+established as exhausted, the follow-on work moved **two levers** instead — same market, same data
+store. First `info`: from price and order flow to *positioning* (what the crowd is holding, rather
+than the wake it leaves in the tape), which is the regime Minority Game theory actually describes.
+Then `construction`: from an unconditional directional bet to fading the crowd **only at its
+extremes** — because positioning content is necessary but not sufficient. The crowd also has to be
+the *fadeable* one; fed a well-informed crowd, a minority-game model faithfully does the wrong
+thing. That study is open, not concluded.
 
 Recording the negative precisely is what made the next question obvious.
 

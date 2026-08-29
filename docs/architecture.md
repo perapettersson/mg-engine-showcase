@@ -68,10 +68,10 @@ they never reach around to mutate another layer's state. Examples:
 A copy-the-whole-struct commit means any new field added in the selection phase automatically
 flows downstream without a separate wiring step.
 
-## Multi-frequency consensus
+## Multi-frequency agent populations
 
 Independent MG agent populations run on **prime-number timeframes** (a 1-minute execution carrier
-plus 7m / 13m / 19m voters). Primes are chosen so the higher timeframes share almost no bar
+plus 7m / 13m / 19m deciders — the carrier itself never votes on direction). Primes are chosen so the higher timeframes share almost no bar
 boundaries with each other or with trader-common grids (5/15/30/60) — applying the MG minority
 principle on the *time axis* and producing more independent samples of the underlying process.
 
