@@ -55,16 +55,43 @@ friction) from a *signal-trapped* one (no gross edge at all).
 
 The project's defining habit is killing its own ideas. A multi-layer regime state-machine (an
 8-state signal classifier, autocorrelation-adaptive payoff switching, regime-conditional direction
-decisions) was designed, implemented behind audit-only flags, verified across the anchor set, and
-**falsified** when it produced no net lift. It was reverted to audit-only rather than tuned to look
-good on the sample. The same fate met a queue of signal-extraction ideas, each documented as tested
-and dropped.
+decisions) was designed, implemented behind audit-only flags and verified across the anchor set —
+then **falsified**. Activating its consumers did not merely fail to help: it cost **−155 net P&L**
+against the baseline across the anchor set. It was reverted to audit-only rather than tuned until
+the regression went away. The same fate met a queue of signal-extraction ideas, each documented as
+tested and dropped.
+
+## 7. Testing the ceiling claim itself
 
 The conclusion the evidence supports — that the binding constraint is the **information content of
-OHLC inputs**, not the modeling method — is itself a falsifiable claim. The first test — adding
-**volume (OHLCV)** — was wired in and cross-anchor-evaluated (N=20): **no net lift** (profit-factor
-robustness unchanged-to-slightly-worse), so it was reverted rather than kept — the ceiling held
-under OHLCV too. Order-flow / cross-asset extensions remain the explicit next steps.
+the inputs**, not the modeling method — is itself a falsifiable claim. And the uncomfortable
+objection to it is obvious: *maybe the engine filtered out its own edge.* Three tests, in increasing
+strength.
+
+**Add information.** A **volume (OHLCV)** extension was wired in and cross-anchor-evaluated (N=20):
+**no net lift**, profit-factor robustness regressed, reverted rather than kept. The ceiling held
+under OHLCV too.
+
+**Measure the information directly.** Rather than inferring a ceiling from P&L, mutual information
+between candidate features and the forward outcome is estimated against a **circular-shift null**,
+which preserves autocorrelation where a naive permutation would not. The best real feature clears
+that null by roughly 0.003–0.009 bits; a planted positive control clears it by 0.017–0.025. The
+instrument works — there is simply very little to measure.
+
+**Test the gate, not the data — the positive control.** The sharpest objection is that a
+conservative entry gate could be manufacturing the null by abstaining on real opportunities. So
+inject a *known*, synthetic directional edge into the feed and watch what the engine's own phase
+gate does with it. The gate is never told where the edge is; it has to find it. Result: the gate's
+pass rate rose from **14.4% to 64.4%**, and trade count from **7 to 58** — it lights up roughly
+4.5× when there is something to find. The gate is therefore a calibrated classifier rather than an
+over-filter, and the abstention observed on real data is a **true negative**: correct silence on a
+feed carrying no signal, not a missed one.
+
+That distinction is the whole reason it was worth measuring, because the two diagnoses imply
+opposite next moves. An over-filter would mean recalibrate the gate. A true negative means the gate
+is fine and only richer *information* can move the result — so the follow-on work moved information,
+not the model. Order-flow was the first channel tried and was itself probed to a null on real
+exchange data; the open lever is crowd **positioning**.
 
 ---
 

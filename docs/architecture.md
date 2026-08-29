@@ -32,7 +32,7 @@ principles: **single-writer state**, **strict t+1 execution timing**, and **dete
 | 10 GOV | Are we allowed to trade now? | sessions, daily caps, situational awareness, news blackout |
 | 11 TGT | What does each frequency want? | per-freq enter/exit/hold/flip intent, owner-bridge |
 | 12 INT | Which one action next bar? | global priority, pending latch |
-| 13 EXEC | Execute the pending from t−1 | t+1 open fill, quantization, cost model |
+| 13 EXEC | Execute the pending from t−1 | t+1 open fill, cost model, the position commit |
 
 ## Core timing law (binding)
 
@@ -44,6 +44,10 @@ decision(t) → consequence(t+1)        # intent at t executes at t+1
 No same-bar round-trips. Execution can never make a trading decision — it only realizes the
 pending latched on the previous bar. This removes an entire class of look-ahead bugs by
 construction.
+
+There is exactly **one** documented exception: an explicitly flagged same-bar forced-flatten path,
+reserved for hard risk overrides. It is a named, asserted carve-out rather than a general loophole —
+any other same-bar execution is a hard error.
 
 ## A / B / C phase split
 
@@ -71,23 +75,27 @@ flows downstream without a separate wiring step.
 ## Multi-frequency agent populations
 
 Independent MG agent populations run on **prime-number timeframes** (a 1-minute execution carrier
-plus 7m / 13m / 19m deciders — the carrier itself never votes on direction). Primes are chosen so the higher timeframes share almost no bar
-boundaries with each other or with trader-common grids (5/15/30/60) — applying the MG minority
-principle on the *time axis* and producing more independent samples of the underlying process.
+plus 7m / 13m / 19m deciders — the carrier itself never votes on direction). Primes are chosen so
+the higher timeframes share almost no bar boundaries with each other or with trader-common grids
+(5/15/30/60) — applying the MG minority principle on the *time axis* and producing more independent
+samples of the underlying process.
 
-The collapse function at the signal commit either (a) **selects** the single best-quality frequency
-or (b) requires **consensus** among the higher timeframes before taking a position. Execution always
-resolves to the 1-minute carrier.
+The collapse function at the signal commit either (a) **selects** the single best-quality frequency,
+or (b) requires **k-of-N consensus** among the higher timeframes before taking a position. Both are
+fully implemented; selection is the current default and consensus remains a pre-run option. Either
+way, execution resolves to the 1-minute carrier.
 
 ## Precedence ≠ pipeline order
 
 Pipeline order (05 → 13) is not the same as decision authority. A later layer can outrank an
 earlier one: governance force-flatten and overnight-flatten override risk sizing; a min-hold
 lifecycle guard outranks a fresh signal. Authority is an explicit, documented ordering enforced by
-assertions — not an accident of execution order.
+an explicit, documented ordering whose load-bearing invariants are enforced by runtime assertions —
+not an accident of execution order.
 
 ## Determinism & replay safety
 
-Same configuration + same data ⇒ identical output, bar for bar. The only randomness is seeded agent
-initialization, routed through a deterministic seeded runner. This makes every result exactly
-reproducible and every regression bisectable.
+Same configuration + same data ⇒ identical output, bar for bar. **All** randomness is seeded and
+replay-deterministic — agent initialization and the per-bar stochastic-strategy draw alike, routed
+through a deterministic seeded runner. This makes every result exactly reproducible and every
+regression bisectable.
