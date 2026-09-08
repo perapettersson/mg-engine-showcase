@@ -13,12 +13,21 @@ full run in its own isolated worktree, dispatched in parallel. Per-anchor and ag
 collected: expectancy per trade, profit factor, payoff ratio, and hit rate (hit rate is treated as a
 *diagnostic*, never the headline metric).
 
+Across those 20 anchors the aggregate outcome is a **net loss after cost**, with a pooled hit rate of
+**0.438**. Individual anchors vary widely — which is precisely why no single one is quoted anywhere in
+this document.
+
 ## 2. Walk-forward (in-sample / out-of-sample)
 
 Each anchor's trades are split chronologically into an in-sample (IS) and out-of-sample (OOS)
 segment. Comparing IS vs OOS expectancy, profit factor and hit rate exposes overfitting: a strategy
 that only works in-sample shows OOS degradation. The cross-anchor distribution of the IS→OOS ratio
 is the honest read (per-anchor OOS samples are individually noisy).
+
+The result is the opposite of overfitting. Out-of-sample expectancy came out **higher** than in-sample
+(**+0.122 vs +0.067**), hit rate rose from **44.5% to 50.2%**, profit factor from **1.20 to 1.70**, and
+half the anchors show positive OOS expectancy. The engine is not fitted to its sample. It simply has no
+edge to fit.
 
 ## 3. Bootstrap confidence intervals
 
@@ -27,12 +36,22 @@ factor and payoff ratio — both within each anchor and across anchors. This dis
 point estimate (narrow CI excluding the break-even line) from an *uncertain* one (wide CI including
 it). It is the single most important guard against reading noise as edge.
 
+The intervals are the honest headline of this project. Across anchors, expectancy per trade comes out at
+**[-0.009, +0.212]** — it **spans zero**, so the direction of the edge is not established. Profit factor
+lands at **[1.019, 1.528]** and hit rate at **[0.438, 0.484]**: gross, something is measurably there;
+net, it is not enough to call an edge. Published as measured, unflattering end included.
+
 ## 4. Monte-Carlo trade-order
 
 The realized trade sequence is reshuffled (M = 10000) to build a drawdown distribution and a
 capital-efficiency profile (drawdown-to-PnL ratio). This answers two questions a single equity curve
 cannot: how lucky was the historical ordering, and how much capital buffer would a live deployment
 actually require.
+
+The realized ordering turns out to be unremarkable: its drawdown sits at the **47.7th percentile** of the
+reshuffled distribution, so the historical path was neither lucky nor unlucky. Capital efficiency is poor
+— drawdown-to-P&L ≈ **1.95**, and the 99th-percentile reshuffled drawdown is **49 index points**, implying
+a buffer several times the expected P&L for any live deployment.
 
 ## 5. Cost-friction analysis
 
