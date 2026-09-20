@@ -60,11 +60,16 @@ Execution costs are modelled as a **single per-fill cost constant, scaled by rec
 position sizes this engine actually trades (order clip ≈ 1 contract) impact is negligible and the
 cost should collapse to the half-spread — which is what the model asserts.
 
-That assertion was **checked, not assumed**. The constant (0.75 index points per fill) was validated
-after the fact against exchange tape for the traded contract: a Roll-estimator half-spread measured
-over 20 intraday sessions came out at **0.705 points** — the guess is right to within 6%. This is
-load-bearing for the verdict: it means the reported net loss is a **real** cost, not an artifact of a
-pessimistic cost model.
+That assertion was **checked, not assumed** — and the check was then re-run, and its first answer
+superseded. An initial Roll-estimator half-spread over 20 intraday sessions came out at **0.705
+points**, which made the 0.75 constant look accurate to within 6%. A later session-restricted
+per-day estimate across a full month of tape puts the median at **0.969 points** — so the constant
+is roughly **30% too low**, not marginally too high. The earlier figure stays on the record; being
+superseded by a better measurement is the point.
+
+This strengthens the verdict rather than weakening it. The engine was charged *less* per fill than
+the tape says it would have paid, so the reported net loss is a real cost that is if anything
+understated — not an artifact of a pessimistic cost model.
 
 Per-anchor break-even hit rate is computed from each anchor's own payoff ratio, and the margin
 above/below break-even is reported. This separates a *cost-trapped* failure mode (gross edge eaten by

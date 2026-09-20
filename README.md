@@ -92,8 +92,10 @@ Strategy quality is measured the way a research desk would, not by a single back
 - **Walk-forward** in-sample / out-of-sample split per anchor.
 - **Bootstrap confidence intervals** (B = 1000) on expectancy, profit factor, payoff ratio.
 - **Monte-Carlo trade-order** shuffles (M = 10000) for drawdown distribution and capital efficiency.
-- **Cost-friction analysis** — a single vol-scaled per-fill cost constant, validated after the fact
-  against exchange tape (0.75 points assumed vs a 0.705-point half-spread measured over 20 days).
+- **Cost-friction analysis** — a single vol-scaled per-fill cost constant, checked against exchange
+  tape and found *optimistic*: a session-restricted per-day Roll half-spread across a full month of
+  tape gives a median of 0.969 points against the 0.75 assumed, so the reported net loss understates
+  real friction rather than manufacturing it.
 
 See [`docs/methodology.md`](docs/methodology.md).
 
